@@ -1,0 +1,32 @@
+version: '3'
+services:
+  caddy:
+    image: "caddy:latest"
+    volumes:
+      - ./pareto.com.pem:/root/certs/pareto.com.pem
+      - ./pareto-public.com.pem:/root/certs/pareto-public.com.pem
+      - ./Caddyfile:/etc/caddy/Caddyfile  # to mount custom Caddyfile
+    ports:
+      - "443:443"
+    depends_on:
+     - pareto
+
+  pareto:
+    depends_on:
+      - postgres
+    build: .
+    entrypoint: ["sh", "-c", "./initdb.sh"]
+
+  postgres:
+    image: "postgres:14.0"
+    ports:
+      - "5432:5432"
+    # volumes:
+    # add local volume mount if needed
+      # - ./data:/var/lib/postgresql/data/pgdata
+    environment:
+      POSTGRES_PASSWORD: password
+
+
+
+
