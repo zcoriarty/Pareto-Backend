@@ -449,6 +449,51 @@ paths:
           schema:
             type: string
       summary: Responds with 200 if service is running
+  /v1/circle:
+    post:
+      tags:
+        - circle
+      description: Circle set name and Account ID
+      summary:  Circle set name and Account ID
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: circle_symbol
+          in: body
+          required: true
+          description: Circle symbol
+          schema:
+            type: string
+        - name: account_id
+          in: body
+          required: true
+          description: Selected Account ID
+          schema:
+            type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: byte
+      responses:
+        200:
+          description: Success
+          schema: 
+            $ref: '#/definitions/UserResponse'
+        400:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        422:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
 
 definitions:
   ErrorResponse:
@@ -518,6 +563,8 @@ definitions:
       family_brokerage_experience:
         type: string
       review_application:
+        type: string
+      circle_symbol:
         type: string
       created_at:
         type: timestamp

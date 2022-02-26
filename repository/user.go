@@ -177,6 +177,7 @@ func (u *UserRepo) Update(user *model.User) (*model.User, error) {
 		"active",
 		"verified",
 		"updated_at",
+		"circle_symbol",
 	).WherePK().Update()
 	if err != nil {
 		u.log.Warn("UserDB Error", zap.Error(err))

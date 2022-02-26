@@ -61,7 +61,9 @@ type User struct {
 	ReferredBy                        string     `json:"referred_by"`
 	ReferralCode                      string     `json:"referral_code"`
 	WatchlistID                       string     `json:"watchlist_id"`
+	CircleSymbol					  string	 `json:"circle_symbol"`
 	PerAccountLimit                   float64    `json:"per_account_limit"`
+	
 }
 
 // ReferralCodeVerifyResponse

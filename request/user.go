@@ -48,6 +48,7 @@ type UpdateUser struct {
 	Avatar                            *string `json:"avatar,omitempty"`
 	ReferredBy                        *string `json:"referred_by,omitempty"`
 	ReferralCode                      *string `json:"referral_code,omitempty"`
+	CircleSymbol					  *string `json:"circle_symbol,omitempty"`
 }
 
 // UserUpdate validates user update request

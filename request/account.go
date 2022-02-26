@@ -51,6 +51,7 @@ type RegisterAdmin struct {
 	Avatar                            string `json:"avatar"`
 	ReferralCode                      string `json:"referral_code"`
 	ReferredBy                        string `json:"referred_by"`
+	CircleSymbol                      string `json:"circle_symbol"`
 }
 
 // AccountCreate validates account creation request
@@ -134,6 +135,7 @@ type Update struct {
 	Avatar                            *string `json:"avatar"`
 	ReferredBy                        *string `json:"referred_by"`
 	WatchlistID                       *string `json:"watchlist_id"`
+	CircleSymbol                      *string `json:"circle_symbol"`
 }
 
 // UpdateProfile updates user's profile

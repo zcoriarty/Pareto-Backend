@@ -62,7 +62,7 @@ var doc = `{
     {
       "name": "Watchlist",
       "description": "WatchList Related APIS"
-    }
+    },
   ],
   "paths": {
 		"/magic": {
@@ -4297,7 +4297,6 @@ var doc = `{
           "account_id": {
             "type": "string"
           },
-        
           "created_at": {
             "type": "timestamp"
           },
@@ -4350,7 +4349,6 @@ var doc = `{
         "account_id": {
           "type": "string"
         },
-      
         "created_at": {
           "type": "timestamp"
         },
@@ -4972,6 +4970,9 @@ var doc = `{
           "bio": { 
             "type": "string"
           },
+          "circle_symbol": { 
+            "type": "string"
+          },
           "facebook_url": { 
             "type": "string"
           },
@@ -5233,6 +5234,9 @@ var doc = `{
 				"bio": { 
 					"type": "string"
 				},
+        "circle_symbol": { 
+          "type": "string"
+        },
 				"facebook_url": { 
 					"type": "string"
 				},
@@ -5389,6 +5393,9 @@ var doc = `{
 						"bio": { 
 							"type": "string"
 						},
+            "circle_symbol": { 
+              "type": "string"
+            },
 						"facebook_url": { 
 							"type": "string"
 						},

@@ -587,7 +587,7 @@
             "required": true,
             "type": "string",
             "format": "byte"
-          },
+          }
           
         ],
         "responses": {
@@ -2245,7 +2245,7 @@
 				],
 				"responses": {
 					"200": {
-						"description": "Success",
+						"description": "Success"
 					},
 					"400": {
 						"description": "Client error",
@@ -2301,7 +2301,7 @@
                 }
               }
             }
-          },
+          }
 				],
 				"responses": {
 					"200": {
@@ -2355,11 +2355,11 @@
             "required": true,
             "type": "string",
             "format": "byte"
-          },
+          }
 				],
 				"responses": {
 					"200": {
-						"description": "Success",
+						"description": "Success"
 					},
 					"400": {
 						"description": "Client error",
@@ -3826,7 +3826,6 @@
           "account_id": {
             "type": "string"
           },
-        
           "created_at": {
             "type": "timestamp"
           },
@@ -3879,7 +3878,6 @@
         "account_id": {
           "type": "string"
         },
-      
         "created_at": {
           "type": "timestamp"
         },
@@ -4501,6 +4499,9 @@
           "bio": { 
             "type": "string"
           },
+          "circle_symbol": { 
+            "type": "string"
+          },
           "facebook_url": { 
             "type": "string"
           },
@@ -4735,6 +4736,9 @@
 				"bio": { 
 					"type": "string"
 				},
+        "circle_symbol": { 
+          "type": "string"
+        },
 				"facebook_url": { 
 					"type": "string"
 				},
@@ -4864,6 +4868,9 @@
 						"bio": { 
 							"type": "string"
 						},
+            "circle_symbol": { 
+              "type": "string"
+            },
 						"facebook_url": { 
 							"type": "string"
 						},
