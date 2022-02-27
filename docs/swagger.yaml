@@ -570,3 +570,22 @@ definitions:
         type: timestamp
       updated_at:
         type: timestamp
+  CircleResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+      deleted_at:
+        type: string
+      account_id:
+        type: string
+      circle_symbol:
+        type: string
+      circle_name:
+        type: string
+      circle_bio:
+        type: string

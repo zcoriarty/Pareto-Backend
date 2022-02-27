@@ -1463,13 +1463,231 @@ var doc = `{
 				}
 			}
 		},
-    "/v1/users": {
+    "/v1/circles": {
 			"get": {
 				"tags": [
-					"Users"
+					"Circles"
 				],
-				"description": "Get users",
-				"summary": "Get users",
+				"description": "Get circles",
+				"summary": "Get circles",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CircleResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/v1/Circles/{id}": {
+			"get": {
+				"tags": [
+					"Circles"
+				],
+				"description": "Get circles",
+				"summary": "Get circles",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CircleResponse"
+            }
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+      
+			"patch": {
+				"tags": [
+					"Circles"
+				],
+				"description": "Update circles",
+				"summary": "Update circles",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "body",
+            "name": "user",
+            "description": "The user to update.",
+            "schema": {
+              "type": "object"
+            }
+          }
+				],
+				"responses": {
+					"204": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			},
+      
+			"delete": {
+				"tags": [
+					"Circles"
+				],
+				"description": "Delete Circles",
+				"summary": "Delete Circles",
+				"produces": [
+					"application/json"
+				],
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          }
+				],
+				"responses": {
+					"204": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+    "/v1/Circles": {
+			"get": {
+				"tags": [
+					"Circles"
+				],
+				"description": "Get Circles",
+				"summary": "Get Circles",
 				"produces": [
 					"application/json"
 				],
@@ -5132,6 +5350,33 @@ var doc = `{
           "type": "string",
           "format": "nullable"
         }
+      }
+    },
+    "CircleResponse": {
+      "type": "object",
+      "properties": {
+        "created_at": { 
+          "type": "string"
+        },
+        "updated_at": { 
+          "type": "string"
+        },
+        "deleted_at": { 
+          "type": "string"
+        },
+        "id": 4,
+        "account_id": { 
+          "type": "string"
+        },
+        "circle_symbol": { 
+          "type": "string"
+        },
+        "circle_name": { 
+          "type": "string"
+        },
+        "circle_bio": { 
+          "type": "string"
+        },
       }
     },
     "UserResponse": {
