@@ -11,26 +11,26 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Circle represents the circle http service
+// Auth represents auth http service
 type Circle struct {
 	svc *circle.Service
 }
 
-// CircleRouter declares the routes for circle router group
-func CircleRouter(svc *circle.Service, r *gin.RouterGroup) {
-	u := Circle{
+func CirclesRouter(svc *circle.Service, r *gin.RouterGroup) {
+	c := Circle{
 		svc: svc,
 	}
-	ur := r.Group("/circles")
-	ur.GET("", u.list)
-	ur.GET("/:id", u.view)
-	ur.PATCH("/:id", u.update)
-	ur.DELETE("/:id", u.delete)
+	cr := r.Group("/circles")
+	cr.GET("", c.list)
+	cr.GET("/:id", c.view)
+	cr.PATCH("/:id", c.update)
+	cr.DELETE("/:id", c.delete)
+
 }
 
 type CircleListResponse struct {
 	Circles []model.Circle `json:"circles"`
-	Page  int          `json:"page"`
+	Page  int              `json:"page"`
 }
 
 func (u *Circle) list(c *gin.Context) {
@@ -65,13 +65,13 @@ func (u *Circle) view(c *gin.Context) {
 }
 
 func (u *Circle) update(c *gin.Context) {
-	updateCircle, err := request.CircleUpdate(c)
+	updateCircle, err := request.UpdateCircle(c)
 	if err != nil {
 		return
 	}
 	circleUpdate, err := u.svc.Update(c, &circle.Update{
-		CircleID:        updateCircle.CircleID,
-		CircleName: updateCircle.CircleName,
+		ID:        updateCircle.ID,
+		CircleBio: updateCircle.CircleBIO,
 
 	})
 	if err != nil {
@@ -92,3 +92,4 @@ func (u *Circle) delete(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{})
 }
+

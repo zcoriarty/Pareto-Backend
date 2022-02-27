@@ -6,19 +6,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// UpdateUser contains user update data from json request
-type UpdateCircle struct {
-
-	CircleID                          int        `json:"circle_id"`
-	AccountID                         string     `json:"account_id"`
-	CircleSymbol					  string	 `json:"circle_symbol"`
-	CircleName                        string     `json:"circle_name"`
-	CircleBIO                         string     `json:"circle_bio"`
+// UpdateC contains user update data from json request
+type UpdateC struct {
+	ID                                int        `json:"id"`
+	AccountID                         *string     `json:"account_id"`
+	CircleSymbol				  	  *string	 `json:"circle_symbol"`
+	CircleName                        *string     `json:"circle_name"`
+	CircleBIO                         *string     `json:"circle_bio"`
+	
 }
 
-// UserUpdate validates user update request
-func CircleUpdate(c *gin.Context) (*UpdateCircle, error) {
-	var u UpdateCircle
+// UpdateCircle validates user update request
+func UpdateCircle(c *gin.Context) (*UpdateC, error) {
+	var u UpdateC
 	id, err := ID(c)
 	if err != nil {
 		return nil, err
@@ -27,6 +27,6 @@ func CircleUpdate(c *gin.Context) (*UpdateCircle, error) {
 		apperr.Response(c, err)
 		return nil, err
 	}
-	u.CircleID = id
+	u.ID = id
 	return &u, nil
 }

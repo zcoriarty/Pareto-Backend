@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/go-pg/pg/v9/orm"
@@ -50,21 +51,40 @@ func (u *CircleRepo) List(qp *model.ListQuery, p *model.Pagination) ([]model.Cir
 	return circles, nil
 }
 
-// Update updates circle's contact info
-func (u *CircleRepo) Update(circle *model.Circle) (*model.Circle, error) {
-	_, err := u.db.Model(circle).Column(
-		"created_at",
-		"circle_id",
-		"account_id",
-		"circle_symbol",
-		"circle_name",
-		"circle_bio",
-
-	).WherePK().Update()
-	if err != nil {
-		u.log.Warn("CircleDB Error", zap.Error(err))
+// Create creates a new circle in our database.
+func (a *CircleRepo) CreateOrUpdate(cir *model.Circle) (*model.Circle, error) {
+	_circle := new(model.Circle)
+	sql := `SELECT id FROM circles WHERE symbol = ?`
+	res, err := a.db.Query(_circle, sql, cir.CircleSymbol)
+	if err == apperr.DB {
+		a.log.Error("CircleRepo Error: ", zap.Error(err))
+		return nil, apperr.DB
 	}
-	return circle, err
+	if res.RowsReturned() != 0 {
+		// update..
+		fmt.Println("updating...")
+		_, err := a.db.Model(cir).Column(
+			"created_at",
+			"id",
+			"account_id",
+			"circle_symbol",
+			"circle_name",
+			"circle_bio",
+		).WherePK().Update()
+		if err != nil {
+			a.log.Warn("CircleRepo Error: ", zap.Error(err))
+			return nil, err
+		}
+		return cir, nil
+	} else {
+		// create
+		fmt.Println("creating...")
+		if err := a.db.Insert(cir); err != nil {
+			a.log.Warn("CircleRepo error: ", zap.Error(err))
+			return nil, apperr.DB
+		}
+	}
+	return cir, nil
 }
 
 // Delete sets deleted_at for a circle
