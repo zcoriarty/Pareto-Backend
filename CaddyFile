@@ -1,6 +1,6 @@
-pareto.com:443 {
+paretocircles.com:443 {
     
     tls /root/certs/pareto-public.com.pem /root/certs/pareto.com.pem
 
-    reverse_proxy http://pareto:8080
+    reverse_proxy http://paretocircles:8080
 }

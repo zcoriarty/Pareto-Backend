@@ -1681,56 +1681,6 @@ var doc = `{
 				}
 			}
 		},
-    "/v1/Circles": {
-			"get": {
-				"tags": [
-					"Circles"
-				],
-				"description": "Get Circles",
-				"summary": "Get Circles",
-				"produces": [
-					"application/json"
-				],
-				"consumes": [
-					"application/json"
-				],
-				"parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "format": "byte"
-          }
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-            "schema": {
-              "$ref": "#/definitions/UsersResponse"
-            }
-					},
-					"400": {
-						"description": "Client error",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					},
-					"422": {
-						"description": "Client error",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					},
-					"500": {
-						"description": "Client error",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					}
-				}
-			}
-		},
 		"/v1/users/{id}": {
 			"get": {
 				"tags": [
