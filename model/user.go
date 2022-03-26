@@ -61,9 +61,8 @@ type User struct {
 	ReferredBy                        string     `json:"referred_by"`
 	ReferralCode                      string     `json:"referral_code"`
 	WatchlistID                       string     `json:"watchlist_id"`
-	CircleSymbol					  string	 `json:"circle_symbol"`
+	CircleSymbol                      string     `json:"circle_symbol"`
 	PerAccountLimit                   float64    `json:"per_account_limit"`
-	
 }
 
 // ReferralCodeVerifyResponse
@@ -121,6 +120,7 @@ type AccountRepo interface {
 	FindVerificationToken(string) (*Verification, error)
 	FindVerificationTokenByUser(*User) (*Verification, error)
 	DeleteVerificationToken(*Verification) error
+	CreateCircle(*Circle) (*Circle, error)
 }
 
 // AuthUser represents data stored in JWT token for user

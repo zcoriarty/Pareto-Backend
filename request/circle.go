@@ -8,11 +8,11 @@ import (
 
 // UpdateC contains user update data from json request
 type UpdateC struct {
-	ID                                int        `json:"id"`
-	AccountID                         *string     `json:"account_id"`
-	CircleSymbol				  	  *string	 `json:"circle_symbol"`
-	CircleName                        *string     `json:"circle_name"`
-	CircleBIO                         *string     `json:"circle_bio"`
+	ID                                int        `json:"-"`
+	AccountID                         *string    `json:"account_id,omitempty"`
+	CircleSymbol				  	  *string	 `json:"circle_symbol,omitempty"`
+	CircleName                        *string    `json:"circle_name,omitempty"`
+	CircleBio                         *string    `json:"circle_bio,omitempty"`
 	
 }
 

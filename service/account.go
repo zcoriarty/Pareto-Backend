@@ -39,6 +39,7 @@ func AccountRouter(svc *account.Service, db orm.DB, r *gin.RouterGroup) {
 		svc: svc,
 		db:  db,
 	}
+	fmt.Println("HEREERL;KFZDN")
 	pr := r.Group("/profile")
 	pr.GET("", a.profile)
 	pr.POST("/avatar", a.uploadAvatar)
@@ -70,6 +71,11 @@ func AccountRouter(svc *account.Service, db orm.DB, r *gin.RouterGroup) {
 	ar.POST("", a.create)
 	ar.PATCH("/:id/password", a.changePassword)
 
+	fmt.Println("HERE20")
+	cir := r.Group("/circles")
+	cir.POST("", a.createCircles)
+	// cir.PATCH("", a.updateCircles)
+	fmt.Println("HERE21")
 	ac := r.Group("/orders")
 	ac.GET("", a.getOrders)
 	ac.POST("", a.createOrder)
@@ -78,11 +84,6 @@ func AccountRouter(svc *account.Service, db orm.DB, r *gin.RouterGroup) {
 	ac.DELETE("", a.cancelAllOrders)
 	ac.DELETE("/:order_id", a.cancelOrder)
 
-	// cs := r.Group("/circles")
-	// cs.GET("", a.getCircles)
-	// cs.GET("/:symbol", a.getOneOpenCircle)
-	// cs.DELETE("", a.closeCircles)
-	// cs.DELETE("/:symbol", a.closeOneCircle)
 
 	pz := r.Group("/positions")
 	pz.GET("", a.getPositions)
@@ -107,6 +108,50 @@ func AccountRouter(svc *account.Service, db orm.DB, r *gin.RouterGroup) {
 	cl := r.Group("/calendar")
 	cl.GET("", a.getCalendar)
 
+}
+
+func (a *AccountService) createCircles(c *gin.Context) {
+	fmt.Println("HERE1")
+	r, err := request.AccountCreate(c)
+	if err != nil {
+		return
+	}
+	circle := &model.Circle{
+		CircleSymbol:            r.CircleSymbol,
+		CircleName:              r.CircleName,
+		CircleBio:               r.CircleBio,
+	}
+	user := &model.User{
+		Username:            r.Username,
+		Password:            r.Password,
+		Email:               r.Email,
+		FirstName:           r.FirstName,
+		LastName:            r.LastName,
+		RoleID:              r.RoleID,
+		AccountID:           r.AccountID,
+		AccountNumber:       r.AccountNumber,
+		AccountCurrency:     r.AccountCurrency,
+		AccountStatus:       r.AccountStatus,
+		DOB:                 r.DOB,
+		City:                r.City,
+		State:               r.State,
+		Country:             r.Country,
+		TaxIDType:           r.TaxIDType,
+		TaxID:               r.TaxID,
+		FundingSource:       r.FundingSource,
+		EmploymentStatus:    r.EmploymentStatus,
+		InvestingExperience: r.InvestingExperience,
+		PublicShareholder:   r.PublicShareholder,
+		AnotherBrokerage:    r.AnotherBrokerage,
+		DeviceID:            r.DeviceID,
+		ProfileCompletion:   r.ProfileCompletion,
+		ReferralCode:        r.ReferralCode,
+	}
+	if err := a.svc.CreateCircle(c, user, circle); err != nil {
+		apperr.Response(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, circle)
 }
 
 func (a *AccountService) create(c *gin.Context) {
@@ -289,6 +334,63 @@ func (a *AccountService) updateProfile(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, user)
 }
+
+// func (a *AccountService) updateCircles(c *gin.Context) {
+// 	p, err := request.UpdateCircle(c)
+// 	if err != nil {
+// 		return
+// 	}
+// 	circle, err := a.svc.UpdateCircle(c, p)
+// 	if err != nil {
+// 		apperr.Response(c, err)
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, circle)
+// }
+
+// func (a *AccountService) createCircles(c *gin.Context) {
+// 	r, err := request.AccountCreate(c)
+// 	if err != nil {
+// 		return
+// 	}
+// 	circle := &model.Circle{
+// 		CircleSymbol:            r.CircleSymbol,
+// 		CircleName:              r.CircleName,
+// 		CircleBio:               r.CircleBio,
+// 	}
+// 	user := &model.User{
+// 		Username:            r.Username,
+// 		Password:            r.Password,
+// 		Email:               r.Email,
+// 		FirstName:           r.FirstName,
+// 		LastName:            r.LastName,
+// 		RoleID:              r.RoleID,
+// 		AccountID:           r.AccountID,
+// 		AccountNumber:       r.AccountNumber,
+// 		AccountCurrency:     r.AccountCurrency,
+// 		AccountStatus:       r.AccountStatus,
+// 		DOB:                 r.DOB,
+// 		City:                r.City,
+// 		State:               r.State,
+// 		Country:             r.Country,
+// 		TaxIDType:           r.TaxIDType,
+// 		TaxID:               r.TaxID,
+// 		FundingSource:       r.FundingSource,
+// 		EmploymentStatus:    r.EmploymentStatus,
+// 		InvestingExperience: r.InvestingExperience,
+// 		PublicShareholder:   r.PublicShareholder,
+// 		AnotherBrokerage:    r.AnotherBrokerage,
+// 		DeviceID:            r.DeviceID,
+// 		ProfileCompletion:   r.ProfileCompletion,
+// 		ReferralCode:        r.ReferralCode,
+// 	}
+// 	if err := a.svc.CreateCircle(c, user, circle); err != nil {
+// 		apperr.Response(c, err)
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, circle)
+// }
+
 
 type Country struct {
 	Name      string `json:"name"`

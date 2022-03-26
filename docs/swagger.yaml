@@ -15,6 +15,44 @@ tags:
 - name: health
   description: Health Check
 paths:
+  /v1/circles:
+    post:
+      description: create circle
+      summary: Add account id to circle table
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: account_id
+          in: body
+          required: true
+          description: user's account id
+          schema:
+            type: string
+        - name: circle_symbol
+          in: body
+          required: true
+          description: user's chosen circle symbol
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          schema: 
+            $ref: '#/definitions/CircleResponse'
+        400:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        422:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Client error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
   /onboarding/email-verification:
     post:
       tags:

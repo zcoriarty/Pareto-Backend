@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/zcoriarty/Pareto-Backend/apperr"
@@ -12,28 +13,90 @@ import (
 )
 
 // Auth represents auth http service
-type Circle struct {
+type CircleService struct {
 	svc *circle.Service
 }
 
-func CirclesRouter(svc *circle.Service, r *gin.RouterGroup) {
-	c := Circle{
+func CircleRouter(svc *circle.Service, r *gin.RouterGroup) {
+	fmt.Println("HERE3")
+	c := CircleService{
 		svc: svc,
 	}
-	cr := r.Group("/circles")
-	cr.GET("", c.list)
-	cr.GET("/:id", c.view)
-	cr.PATCH("/:id", c.update)
-	cr.DELETE("/:id", c.delete)
+	cir := r.Group("/circles")
+	cir.GET("", c.list)
+	// cir.POST("", c.createCircles)
+	cir.PATCH("", c.updateCircles)
+	cir.GET("/:id", c.view)
+	// cr.PATCH("/:id", c.update)
+	cir.DELETE("/:id", c.delete)
 
 }
 
 type CircleListResponse struct {
-	Circles []model.Circle `json:"circles"`
+	Circle []model.Circle  `json:"circles"`
 	Page  int              `json:"page"`
 }
 
-func (u *Circle) list(c *gin.Context) {
+
+func (a *CircleService) updateCircles(c *gin.Context) {
+	fmt.Println("HERE2")
+	p, err := request.UpdateCircle(c)
+	if err != nil {
+		return
+	}
+	circle, err := a.svc.UpdateCircle(c, p)
+	if err != nil {
+		apperr.Response(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, circle)
+}
+
+// func (a *CircleService) createCircles(c *gin.Context) {
+// 	fmt.Println("HERE1")
+// 	r, err := request.AccountCreate(c)
+// 	if err != nil {
+// 		return
+// 	}
+// 	circle := &model.Circle{
+// 		CircleSymbol:            r.CircleSymbol,
+// 		CircleName:              r.CircleName,
+// 		CircleBio:               r.CircleBio,
+// 	}
+// 	user := &model.User{
+// 		Username:            r.Username,
+// 		Password:            r.Password,
+// 		Email:               r.Email,
+// 		FirstName:           r.FirstName,
+// 		LastName:            r.LastName,
+// 		RoleID:              r.RoleID,
+// 		AccountID:           r.AccountID,
+// 		AccountNumber:       r.AccountNumber,
+// 		AccountCurrency:     r.AccountCurrency,
+// 		AccountStatus:       r.AccountStatus,
+// 		DOB:                 r.DOB,
+// 		City:                r.City,
+// 		State:               r.State,
+// 		Country:             r.Country,
+// 		TaxIDType:           r.TaxIDType,
+// 		TaxID:               r.TaxID,
+// 		FundingSource:       r.FundingSource,
+// 		EmploymentStatus:    r.EmploymentStatus,
+// 		InvestingExperience: r.InvestingExperience,
+// 		PublicShareholder:   r.PublicShareholder,
+// 		AnotherBrokerage:    r.AnotherBrokerage,
+// 		DeviceID:            r.DeviceID,
+// 		ProfileCompletion:   r.ProfileCompletion,
+// 		ReferralCode:        r.ReferralCode,
+// 	}
+// 	if err := a.svc.CreateCircle(c, user, circle); err != nil {
+// 		apperr.Response(c, err)
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, circle)
+// }
+
+func (u *CircleService) list(c *gin.Context) {
 	p, err := request.Paginate(c)
 	if err != nil {
 		return
@@ -46,12 +109,12 @@ func (u *Circle) list(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, CircleListResponse{
-		Circles: result,
+		Circle: result,
 		Page:  p.Page,
 	})
 }
 
-func (u *Circle) view(c *gin.Context) {
+func (u *CircleService) view(c *gin.Context) {
 	id, err := request.ID(c)
 	if err != nil {
 		return
@@ -64,14 +127,15 @@ func (u *Circle) view(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-func (u *Circle) update(c *gin.Context) {
+func (u *CircleService) update(c *gin.Context) {
 	updateCircle, err := request.UpdateCircle(c)
 	if err != nil {
 		return
 	}
-	circleUpdate, err := u.svc.Update(c, &circle.Update{
-		ID:        updateCircle.ID,
-		CircleBio: updateCircle.CircleBIO,
+	circleUpdate, err := u.svc.CreateOrUpdate(c, &circle.Update{
+		CircleSymbol: updateCircle.CircleSymbol,
+		CircleName:   updateCircle.CircleName,
+		CircleBio:    updateCircle.CircleBio,
 
 	})
 	if err != nil {
@@ -81,7 +145,7 @@ func (u *Circle) update(c *gin.Context) {
 	c.JSON(http.StatusOK, circleUpdate)
 }
 
-func (u *Circle) delete(c *gin.Context) {
+func (u *CircleService) delete(c *gin.Context) {
 	id, err := request.ID(c)
 	if err != nil {
 		return
@@ -92,4 +156,6 @@ func (u *Circle) delete(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{})
 }
+
+
 

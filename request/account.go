@@ -52,9 +52,11 @@ type RegisterAdmin struct {
 	ReferralCode                      string `json:"referral_code"`
 	ReferredBy                        string `json:"referred_by"`
 	CircleSymbol                      string `json:"circle_symbol"`
+	CircleName						  string `json:"circle_name"`
+	CircleBio						  string `json:"circle_bio"`
 }
 
-// AccountCreate validates account creation request
+// AccountCreate validates account creation request 
 func AccountCreate(c *gin.Context) (*RegisterAdmin, error) {
 	var r RegisterAdmin
 	if err := c.ShouldBindJSON(&r); err != nil {
@@ -136,6 +138,8 @@ type Update struct {
 	ReferredBy                        *string `json:"referred_by"`
 	WatchlistID                       *string `json:"watchlist_id"`
 	CircleSymbol                      *string `json:"circle_symbol"`
+	CircleName                        *string `json:"circle_name"`
+	CircleBio                         *string `json:"circle_bio"`
 }
 
 // UpdateProfile updates user's profile
@@ -149,3 +153,5 @@ func UpdateProfile(c *gin.Context) (*Update, error) {
 	p.ID = id.(int)
 	return &p, nil
 }
+
+

@@ -12,6 +12,7 @@ import (
 	"github.com/zcoriarty/Pareto-Backend/repository/account"
 	assets "github.com/zcoriarty/Pareto-Backend/repository/assets"
 	"github.com/zcoriarty/Pareto-Backend/repository/auth"
+	"github.com/zcoriarty/Pareto-Backend/repository/circle"
 	"github.com/zcoriarty/Pareto-Backend/repository/plaid"
 	"github.com/zcoriarty/Pareto-Backend/repository/transfer"
 	"github.com/zcoriarty/Pareto-Backend/repository/user"
@@ -45,6 +46,7 @@ type Services struct {
 func (s *Services) SetupV1Routes() {
 	// database logic
 	userRepo := repository.NewUserRepo(s.DB, s.Log)
+	circleRepo := repository.NewCircleRepo(s.DB, s.Log)
 	accountRepo := repository.NewAccountRepo(s.DB, s.Log, secret.New())
 	assetRepo := repository.NewAssetRepo(s.DB, s.Log, secret.New())
 	rbac := repository.NewRBACService(userRepo)
@@ -65,6 +67,7 @@ func (s *Services) SetupV1Routes() {
 	authService := auth.NewAuthService(userRepo, accountRepo, s.JWT, s.Mail, s.Mobile, s.Magic)
 	accountService := account.NewAccountService(userRepo, accountRepo, rbac, secret.New())
 	userService := user.NewUserService(userRepo, authService, rbac)
+	circleService := circle.NewCircleService(userRepo, circleRepo, authService, rbac, secret.New())
 	plaidService := plaid.NewPlaidService(userRepo, accountRepo, s.JWT, s.DB, s.Log)
 	transferService := transfer.NewTransferService(userRepo, accountRepo, s.JWT, s.DB, s.Log)
 	assetsService := assets.NewAssetsService(userRepo, accountRepo, assetRepo, s.JWT, s.DB, s.Log)
@@ -80,6 +83,7 @@ func (s *Services) SetupV1Routes() {
 	service.TransferRouter(transferService, accountService, v1Router)
 	service.AssetsRouter(assetsService, accountService, v1Router)
 	service.UserRouter(userService, v1Router)
+	service.CircleRouter(circleService, v1Router)
 
 	// Routes for static files
 	s.R.StaticFS("/file", http.Dir("public"))

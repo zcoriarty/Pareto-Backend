@@ -27,7 +27,7 @@ import (
 )
 
 // NewAuthService creates new auth service
-func NewAuthService(userRepo model.UserRepo, accountRepo model.AccountRepo, jwt JWT, m mail.Service, mob mobile.Service, mag magic.Service) *Service {
+func NewAuthService(userRepo model.UserRepo,accountRepo model.AccountRepo, jwt JWT, m mail.Service, mob mobile.Service, mag magic.Service) *Service {
 	return &Service{userRepo, accountRepo, jwt, m, mob, mag}
 }
 

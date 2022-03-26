@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"fmt"
 
 	"github.com/zcoriarty/Pareto-Backend/apperr"
 	"github.com/zcoriarty/Pareto-Backend/model"
@@ -47,6 +48,25 @@ func (a *AccountRepo) Create(u *model.User) (*model.User, error) {
 	}
 	return u, nil
 }
+
+// // Create creates a new user in our database
+// func (a *AccountRepo) CreateCircle(u *model.Circle) (*model.Circle, error) {
+// 	circle := new(model.Circle)
+// 	sql := `SELECT id FROM circles WHERE circle_symbol = ? AND deleted_at IS NULL`
+// 	res, err := a.db.Query(circle, sql, u.CircleSymbol, u.CircleName, u.CircleBio)
+// 	if err != nil {
+// 		a.log.Error("AccountRepo Error: ", zap.Error(err))
+// 		return nil, apperr.DB
+// 	}
+// 	if res.RowsReturned() != 0 {
+// 		return nil, apperr.New(http.StatusBadRequest, "Circle already exists.")
+// 	}
+// 	if err := a.db.Insert(u); err != nil {
+// 		a.log.Warn("AccountRepo error: ", zap.Error(err))
+// 		return nil, apperr.DB
+// 	}
+// 	return u, nil
+// }
 
 func encodeToString(max int) string {
 	b := make([]byte, max)
@@ -276,4 +296,24 @@ func (a *AccountRepo) DeleteVerificationToken(v *model.Verification) error {
 		return apperr.DB
 	}
 	return err
+}
+
+// Create creates a new user in our database
+func (a *AccountRepo) CreateCircle(u *model.Circle) (*model.Circle, error) {
+	fmt.Println("HERE11")
+	circle := new(model.Circle)
+	sql := `SELECT id FROM circles WHERE circle_symbol = ? AND deleted_at IS NULL`
+	res, err := a.db.Query(circle, sql, u.CircleSymbol, u.CircleName, u.CircleBio)
+	if err != nil {
+		a.log.Error("AccountRepo Error: ", zap.Error(err))
+		return nil, apperr.DB
+	}
+	if res.RowsReturned() != 0 {
+		return nil, apperr.New(http.StatusBadRequest, "Circle already exists.")
+	}
+	if err := a.db.Insert(u); err != nil {
+		a.log.Warn("AccountRepo error: ", zap.Error(err))
+		return nil, apperr.DB
+	}
+	return u, nil
 }

@@ -63,6 +63,10 @@ var doc = `{
       "name": "Watchlist",
       "description": "WatchList Related APIS"
     },
+    {
+      "name": "Circles",
+      "description": "User linked Circles"
+    }
   ],
   "paths": {
 		"/magic": {
@@ -1511,9 +1515,124 @@ var doc = `{
 						}
 					}
 				}
+			},
+      "patch": {
+        "tags": [
+          "Circles"
+        ],
+        "description": "Update circles",
+        "summary": "Update circles",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "in": "body",
+            "name": "circle",
+            "description": "The circle to update.",
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "422": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Circles"
+        ],
+        "description": "Create a circle",
+        "summary": "Create a circle",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "circle",
+            "description": "The circle to create.",
+            "schema": {
+              "type": "object",
+              "required": [
+                "account_id",
+                "circle_symbol"
+              ],
+              "properties": {
+                "account_id": {
+                  "type": "string"
+                },
+                "circle_symbol": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/CircleResponse"
+						}
+					},
+					"400": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"422": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"500": {
+						"description": "Client error",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
 			}
 		},
-		"/v1/Circles/{id}": {
+    
+		"/v1/circles/{id}": {
 			"get": {
 				"tags": [
 					"Circles"
@@ -1568,67 +1687,7 @@ var doc = `{
 					}
 				}
 			},
-      
-			"patch": {
-				"tags": [
-					"Circles"
-				],
-				"description": "Update circles",
-				"summary": "Update circles",
-				"produces": [
-					"application/json"
-				],
-				"consumes": [
-					"application/json"
-				],
-				"parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "format": "byte"
-          },
-          {
-            "in": "body",
-            "name": "user",
-            "description": "The user to update.",
-            "schema": {
-              "type": "object"
-            }
-          }
-				],
-				"responses": {
-					"204": {
-						"description": "Success"
-					},
-					"400": {
-						"description": "Client error",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					},
-					"422": {
-						"description": "Client error",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					},
-					"500": {
-						"description": "Client error",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					}
-				}
-			},
-      
+			
 			"delete": {
 				"tags": [
 					"Circles"
@@ -1796,7 +1855,6 @@ var doc = `{
 					}
 				}
 			},
-      
 			"delete": {
 				"tags": [
 					"Users"
