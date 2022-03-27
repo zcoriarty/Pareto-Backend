@@ -16,7 +16,7 @@ import (
 )
 
 // NewManager returns a new manager
-func NewManager(accountRepo *repository.AccountRepo, roleRepo *repository.RoleRepo, db *pg.DB) *Manager {
+func NewManager(accountRepo *repository.AccountRepo, roleRepo *repository.RoleRepo, circleRepo *repository.CircleRepo, db *pg.DB) *Manager {
 	return &Manager{accountRepo, roleRepo, db}
 }
 

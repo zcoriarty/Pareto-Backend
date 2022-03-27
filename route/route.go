@@ -67,7 +67,7 @@ func (s *Services) SetupV1Routes() {
 	authService := auth.NewAuthService(userRepo, accountRepo, s.JWT, s.Mail, s.Mobile, s.Magic)
 	accountService := account.NewAccountService(userRepo, accountRepo, rbac, secret.New())
 	userService := user.NewUserService(userRepo, authService, rbac)
-	circleService := circle.NewCircleService(userRepo, circleRepo, authService, rbac, secret.New())
+	circleService := circle.NewCircleService(userRepo, circleRepo, authService, rbac)
 	plaidService := plaid.NewPlaidService(userRepo, accountRepo, s.JWT, s.DB, s.Log)
 	transferService := transfer.NewTransferService(userRepo, accountRepo, s.JWT, s.DB, s.Log)
 	assetsService := assets.NewAssetsService(userRepo, accountRepo, assetRepo, s.JWT, s.DB, s.Log)

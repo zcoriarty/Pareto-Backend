@@ -1,13 +1,13 @@
 package circle
 
 import (
-	"fmt"
+	// "fmt"
 	"net/http"
 
 	"github.com/zcoriarty/Pareto-Backend/apperr"
 	"github.com/zcoriarty/Pareto-Backend/model"
 	"github.com/zcoriarty/Pareto-Backend/request"
-	"github.com/zcoriarty/Pareto-Backend/secret"
+	// "github.com/zcoriarty/Pareto-Backend/secret"
 
 	"github.com/zcoriarty/Pareto-Backend/repository/platform/query"
 	"github.com/zcoriarty/Pareto-Backend/repository/platform/structs"
@@ -16,14 +16,12 @@ import (
 )
 
 // NewCircleService create a new circle application service
-func NewCircleService(userRepo model.UserRepo, circleRepo model.CircleRepo, auth model.AuthService, rbac model.RBACService, secret secret.Service) *Service {
-	fmt.Println("HERE8")
+func NewCircleService(userRepo model.UserRepo, circleRepo model.CircleRepo, auth model.AuthService, rbac model.RBACService) *Service {
 	return &Service{
 		userRepo:   userRepo,
 		circleRepo: circleRepo,
 		auth:       auth,
 		rbac:       rbac,
-		secret:     secret,
 	}
 }
 
@@ -33,7 +31,18 @@ type Service struct {
 	circleRepo model.CircleRepo
 	auth       model.AuthService
 	rbac       model.RBACService
-	secret      secret.Service
+}
+
+
+// Create creates a new circle
+func (s *Service) CreateCircle(c *gin.Context,cir *model.Circle) error {
+	// fmt.Println("Here/circle")
+	// if !s.rbac.AccountCreate(c, u.RoleID) {
+	// 	return apperr.New(http.StatusForbidden, "Forbidden")
+	// }
+	// u.Password = s.secret.HashPassword(u.Password)
+	cir, err := s.circleRepo.CreateCircle(cir)
+	return err
 }
 
 // List returns list of circles
@@ -64,7 +73,6 @@ type Update struct {
 
 // Update updates circle's contact information
 func (s *Service) CreateOrUpdate(c *gin.Context, update *Update) (*model.Circle, error) {
-	fmt.Println("HERE7")
 	if !s.rbac.EnforceUser(c, update.ID) {
 		return nil, apperr.New(http.StatusForbidden, "Forbidden")
 	}
@@ -78,7 +86,6 @@ func (s *Service) CreateOrUpdate(c *gin.Context, update *Update) (*model.Circle,
 
 // Delete deletes a circle
 func (s *Service) Delete(c *gin.Context, id int) error {
-	fmt.Println("HERE6")
 	u, err := s.circleRepo.View(id)
 	if err != nil {
 		return err
@@ -92,7 +99,6 @@ func (s *Service) Delete(c *gin.Context, id int) error {
 
 // UpdateCircle updated user's circle
 func (s *Service) UpdateCircle(c *gin.Context, update *request.UpdateC) (*model.Circle, error) {
-	fmt.Println("HERE5")
 	if !s.rbac.EnforceUser(c, update.ID) {
 		return nil, apperr.New(http.StatusForbidden, "Forbidden")
 	}

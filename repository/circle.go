@@ -13,7 +13,6 @@ import (
 
 // NewUserRepo returns a new UserRepo instance
 func NewCircleRepo(db orm.DB, log *zap.Logger) *CircleRepo {
-	fmt.Println("HERE9")
 	return &CircleRepo{db, log}
 }
 
@@ -21,7 +20,28 @@ func NewCircleRepo(db orm.DB, log *zap.Logger) *CircleRepo {
 type CircleRepo struct {
 	db         orm.DB
 	log        *zap.Logger
-	
+}
+
+
+// CreateCircle creates a new user in our database
+func (a *CircleRepo) CreateCircle(u *model.Circle) (*model.Circle, error) {
+	// fmt.Println("HERE - repository")
+	a.log.Error("HERE - repo")
+	circle := new(model.Circle)
+	sql := `SELECT id FROM circles WHERE circle_symbol = ? AND deleted_at IS NULL`
+	res, err := a.db.Query(circle, sql, u.CircleSymbol)
+	if err != nil {
+		a.log.Error("AccountRepo Error: ", zap.Error(err))
+		return nil, apperr.DB
+	}
+	if res.RowsReturned() != 0 {
+		return nil, apperr.New(http.StatusBadRequest, "Circle already exists.")
+	}
+	if err := a.db.Insert(u); err != nil {
+		a.log.Warn("AccountRepo error: ", zap.Error(err))
+		return nil, apperr.DB
+	}
+	return u, nil
 }
 
 // View returns single circle by ID
@@ -54,7 +74,6 @@ func (u *CircleRepo) List(qp *model.ListQuery, p *model.Pagination) ([]model.Cir
 
 // Create creates a new circle in our database.
 func (a *CircleRepo) CreateOrUpdate(cir *model.Circle) (*model.Circle, error) {
-	fmt.Println("HERE10")
 	_circle := new(model.Circle)
 	sql := `SELECT id FROM circles WHERE circle_symbol = ?`
 	res, err := a.db.Query(_circle, sql, cir.CircleSymbol)

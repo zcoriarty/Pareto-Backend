@@ -17,7 +17,7 @@ type UpdateC struct {
 }
 
 // UpdateCircle validates user update request
-func UpdateCircle(c *gin.Context) (*UpdateC, error) {
+func CircleUpdate(c *gin.Context) (*UpdateC, error) {
 	var u UpdateC
 	id, err := ID(c)
 	if err != nil {

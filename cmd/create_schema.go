@@ -25,8 +25,9 @@ var createSchemaCmd = &cobra.Command{
 		defer log.Sync()
 		accountRepo := repository.NewAccountRepo(db, log, secret.New())
 		roleRepo := repository.NewRoleRepo(db, log)
+		circleRepo := repository.NewCircleRepo(db, log)
 
-		m := manager.NewManager(accountRepo, roleRepo, db)
+		m := manager.NewManager(accountRepo, roleRepo, circleRepo, db)
 		models := manager.GetModels()
 		m.CreateSchema(models...)
 		m.CreateRoles()

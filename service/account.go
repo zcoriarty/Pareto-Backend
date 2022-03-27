@@ -39,7 +39,6 @@ func AccountRouter(svc *account.Service, db orm.DB, r *gin.RouterGroup) {
 		svc: svc,
 		db:  db,
 	}
-	fmt.Println("HEREERL;KFZDN")
 	pr := r.Group("/profile")
 	pr.GET("", a.profile)
 	pr.POST("/avatar", a.uploadAvatar)
@@ -71,11 +70,12 @@ func AccountRouter(svc *account.Service, db orm.DB, r *gin.RouterGroup) {
 	ar.POST("", a.create)
 	ar.PATCH("/:id/password", a.changePassword)
 
-	fmt.Println("HERE20")
-	cir := r.Group("/circles")
-	cir.POST("", a.createCircles)
-	// cir.PATCH("", a.updateCircles)
-	fmt.Println("HERE21")
+	// fmt.Println("HERE20")
+	// cir := r.Group("/circles")
+	// cir.POST("", a.createCircles)
+	// // cir.PATCH("", a.updateCircles)
+	// fmt.Println("HERE21")
+
 	ac := r.Group("/orders")
 	ac.GET("", a.getOrders)
 	ac.POST("", a.createOrder)
@@ -108,50 +108,6 @@ func AccountRouter(svc *account.Service, db orm.DB, r *gin.RouterGroup) {
 	cl := r.Group("/calendar")
 	cl.GET("", a.getCalendar)
 
-}
-
-func (a *AccountService) createCircles(c *gin.Context) {
-	fmt.Println("HERE1")
-	r, err := request.AccountCreate(c)
-	if err != nil {
-		return
-	}
-	circle := &model.Circle{
-		CircleSymbol:            r.CircleSymbol,
-		CircleName:              r.CircleName,
-		CircleBio:               r.CircleBio,
-	}
-	user := &model.User{
-		Username:            r.Username,
-		Password:            r.Password,
-		Email:               r.Email,
-		FirstName:           r.FirstName,
-		LastName:            r.LastName,
-		RoleID:              r.RoleID,
-		AccountID:           r.AccountID,
-		AccountNumber:       r.AccountNumber,
-		AccountCurrency:     r.AccountCurrency,
-		AccountStatus:       r.AccountStatus,
-		DOB:                 r.DOB,
-		City:                r.City,
-		State:               r.State,
-		Country:             r.Country,
-		TaxIDType:           r.TaxIDType,
-		TaxID:               r.TaxID,
-		FundingSource:       r.FundingSource,
-		EmploymentStatus:    r.EmploymentStatus,
-		InvestingExperience: r.InvestingExperience,
-		PublicShareholder:   r.PublicShareholder,
-		AnotherBrokerage:    r.AnotherBrokerage,
-		DeviceID:            r.DeviceID,
-		ProfileCompletion:   r.ProfileCompletion,
-		ReferralCode:        r.ReferralCode,
-	}
-	if err := a.svc.CreateCircle(c, user, circle); err != nil {
-		apperr.Response(c, err)
-		return
-	}
-	c.JSON(http.StatusOK, circle)
 }
 
 func (a *AccountService) create(c *gin.Context) {
@@ -334,62 +290,6 @@ func (a *AccountService) updateProfile(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, user)
 }
-
-// func (a *AccountService) updateCircles(c *gin.Context) {
-// 	p, err := request.UpdateCircle(c)
-// 	if err != nil {
-// 		return
-// 	}
-// 	circle, err := a.svc.UpdateCircle(c, p)
-// 	if err != nil {
-// 		apperr.Response(c, err)
-// 		return
-// 	}
-// 	c.JSON(http.StatusOK, circle)
-// }
-
-// func (a *AccountService) createCircles(c *gin.Context) {
-// 	r, err := request.AccountCreate(c)
-// 	if err != nil {
-// 		return
-// 	}
-// 	circle := &model.Circle{
-// 		CircleSymbol:            r.CircleSymbol,
-// 		CircleName:              r.CircleName,
-// 		CircleBio:               r.CircleBio,
-// 	}
-// 	user := &model.User{
-// 		Username:            r.Username,
-// 		Password:            r.Password,
-// 		Email:               r.Email,
-// 		FirstName:           r.FirstName,
-// 		LastName:            r.LastName,
-// 		RoleID:              r.RoleID,
-// 		AccountID:           r.AccountID,
-// 		AccountNumber:       r.AccountNumber,
-// 		AccountCurrency:     r.AccountCurrency,
-// 		AccountStatus:       r.AccountStatus,
-// 		DOB:                 r.DOB,
-// 		City:                r.City,
-// 		State:               r.State,
-// 		Country:             r.Country,
-// 		TaxIDType:           r.TaxIDType,
-// 		TaxID:               r.TaxID,
-// 		FundingSource:       r.FundingSource,
-// 		EmploymentStatus:    r.EmploymentStatus,
-// 		InvestingExperience: r.InvestingExperience,
-// 		PublicShareholder:   r.PublicShareholder,
-// 		AnotherBrokerage:    r.AnotherBrokerage,
-// 		DeviceID:            r.DeviceID,
-// 		ProfileCompletion:   r.ProfileCompletion,
-// 		ReferralCode:        r.ReferralCode,
-// 	}
-// 	if err := a.svc.CreateCircle(c, user, circle); err != nil {
-// 		apperr.Response(c, err)
-// 		return
-// 	}
-// 	c.JSON(http.StatusOK, circle)
-// }
 
 
 type Country struct {
@@ -1299,116 +1199,6 @@ func (a *AccountService) removeAssetFromWatchList(c *gin.Context) {
 	c.JSON(response.StatusCode, responseObject)
 }
 
-// func (a *AccountService) getCircles(c *gin.Context) {
-// 	id, _ := c.Get("id")
-// 	assets := []interface{}{}
-// 	user := a.svc.GetProfile(c, id.(int))
-// 	if user != nil && user.AccountID != "" {
-// 		client := &http.Client{}
-// 		accountID := user.AccountID
-
-// 		req, err := http.NewRequest("GET", os.Getenv("BROKER_API_BASE")+"/v1/trading/accounts/"+accountID+"/positions", nil)
-// 		if err != nil {
-// 			fmt.Print(err.Error())
-// 		}
-
-// 		req.Header.Add("Authorization", os.Getenv("BROKER_TOKEN"))
-// 		response, err := client.Do(req)
-
-// 		if err != nil {
-// 			fmt.Print(err.Error())
-// 		}
-
-// 		responseData, err := ioutil.ReadAll(response.Body)
-// 		if err != nil {
-// 			log.Fatal(err)
-// 		}
-
-// 		var responseObject interface{}
-// 		json.Unmarshal(responseData, &responseObject)
-
-// 		// Get symbol names
-// 		var symbolNames []string
-// 		for _, ass := range responseObject.([]interface{}) {
-// 			ass, _ := ass.(map[string]interface{})
-// 			symbolNames = append(symbolNames, ass["symbol"].(string))
-
-// 			for _, ass2 := range AssetsList {
-// 				if ass2.Symbol == ass["symbol"] {
-// 					ass["name"] = ass2.Name
-// 					ass["ticker"] = gin.H{}
-// 					ass["is_watchlisted"] = false
-// 				}
-// 			}
-// 			assets = append(assets, ass)
-
-// 		}
-
-// 		if len(symbolNames) > 0 {
-// 			client := &http.Client{}
-
-// 			req, err := http.NewRequest("GET", os.Getenv("BROKER_API_DATA_BASE")+"/v2/stocks/snapshots?symbols="+url.QueryEscape(strings.Join(symbolNames[:], ",")), nil)
-// 			if err != nil {
-// 				fmt.Print(err.Error())
-// 			}
-
-// 			req.Header.Add("Authorization", os.Getenv("BROKER_TOKEN"))
-// 			response, err := client.Do(req)
-
-// 			if err != nil {
-// 				fmt.Print(err.Error())
-// 			}
-
-// 			responseData, err := ioutil.ReadAll(response.Body)
-// 			if err != nil {
-// 				log.Fatal(err)
-// 			}
-// 			// fmt.Printf("%v", string(responseData))
-
-// 			var responseObject map[string]interface{}
-// 			json.Unmarshal(responseData, &responseObject)
-
-// 			for index := range assets {
-// 				assets[index].(map[string]interface{})["ticker"] = responseObject[assets[index].(map[string]interface{})["symbol"].(string)]
-// 			}
-
-// 			// Watchlisted flag
-// 			if user.WatchlistID != "" {
-// 				req2, err := http.NewRequest("GET", os.Getenv("BROKER_API_BASE")+"/v1/trading/accounts/"+user.AccountID+"/watchlists/"+user.WatchlistID, nil)
-// 				req2.Header.Add("Authorization", os.Getenv("BROKER_TOKEN"))
-
-// 				response2, _ := client.Do(req2)
-// 				responseData2, err := ioutil.ReadAll(response2.Body)
-// 				if err != nil {
-// 					apperr.Response(c, apperr.New(response2.StatusCode, "Something went wrong. Try again later."))
-// 					return
-// 				}
-// 				json.Unmarshal(responseData2, &responseObject)
-// 				for index := range assets {
-// 					isWatchlisted := false
-// 					for _, ass := range responseObject["assets"].([]interface{}) {
-// 						ass, _ := ass.(map[string]interface{})
-// 						if ass["symbol"] == assets[index].(map[string]interface{})["symbol"] {
-// 							isWatchlisted = true
-// 							break
-// 						}
-// 					}
-
-// 					assets[index].(map[string]interface{})["is_watchlisted"] = isWatchlisted
-// 				}
-// 			}
-// 		}
-
-// 		// fmt.Println(assets)
-// 		// fmt.Println(symbolNames)
-
-// 		c.JSON(response.StatusCode, assets)
-// 		return
-// 	}
-// 	c.JSON(http.StatusBadRequest, gin.H{
-// 		"message": "Couldn't get positions.",
-// 	})
-// }
 
 // func (a *AccountService) getOneOpenPosition(c *gin.Context) {
 // 	id, _ := c.Get("id")

@@ -1568,7 +1568,9 @@ var doc = `{
             }
           }
         }
-      },
+      }
+    },
+    "/v1/circles/create_circle": {
       "post": {
         "tags": [
           "Circles"
@@ -1604,34 +1606,33 @@ var doc = `{
           }
         ],
         "responses": {
-					"200": {
-						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/CircleResponse"
-						}
-					},
-					"400": {
-						"description": "Client error",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					},
-					"422": {
-						"description": "Client error",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					},
-					"500": {
-						"description": "Client error",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					}
-				}
-			}
-		},
-    
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CircleResponse"
+            }
+          },
+          "400": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "422": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
 		"/v1/circles/{id}": {
 			"get": {
 				"tags": [
@@ -3373,7 +3374,6 @@ var doc = `{
 				}
 			}
 		}
-		
   },
   "definitions": {
     "ErrorResponse": {
